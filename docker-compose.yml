@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+    mongo:
+        image: mongo
+        restart: always
+        networks:
+            - fiap
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        depends_on:
+            - mongo
+        networks:
+            - fiap
+    transacoes:
+        image: cesaragsilva/transacoes
+        restart: always
+        depends_on:
+            - mongo
+        ports:
+            - 80:80
+        environment: 
+            ASPNETCORE_ENVIRONMENT: Development
+        networks:
+            - fiap
+            
+networks:
+    fiap:
+        driver: bridge
